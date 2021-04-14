@@ -6,7 +6,8 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      squares: Array(9).fill(""), // 3x3 board
+      squaresPlayer1: Array(9).fill(""), // 3x3 board
+      squaresPlayer2: Array(9).fill(""), // 3x3 board
       xScore: 0,
       oScore: 0,
       whosTurn: this.props.myTurn,
@@ -27,7 +28,8 @@ class Game extends React.Component {
       // Start a new round
       else if (msg.message.reset) {
         this.setState({
-          squares: Array(9).fill(""),
+          squaresPlayer1: Array(9).fill(""),
+          squaresPlayer2: Array(9).fill(""),
           whosTurn: this.props.myTurn,
         });
 
@@ -168,49 +170,80 @@ class Game extends React.Component {
 
   // Opponent's move is published to the board
   publishMove = (index, piece) => {
-    const squares = this.state.squares;
+    console.log("🚀 ~ file: Game.js ~ line 173 ~ Game ~ piece", piece);
+    if (piece === "X") {
+      const squares = this.state.squaresPlayer1;
 
-    squares[index] = piece;
-    this.turn = squares[index] === "X" ? "O" : "X";
-
-    this.setState({
-      squares: squares,
-      whosTurn: !this.state.whosTurn,
-    });
-
-    this.checkForWinner(squares);
-  };
-
-  onMakeMove = (index) => {
-    const squares = this.state.squares;
-
-    // Check if the square is empty and if it's the player's turn to make a move
-    if (!squares[index] && this.turn === this.props.piece) {
-      squares[index] = this.props.piece;
+      squares[index] = piece;
+      this.turn = squares[index] === "X" ? "O" : "X";
 
       this.setState({
-        squares: squares,
+        squaresPlayer1: squares,
         whosTurn: !this.state.whosTurn,
       });
 
-      // Other player's turn to make a move
-      this.turn = this.turn === "X" ? "O" : "X";
+      this.checkForWinner(squares);
+    } else {
+      const squares = this.state.squaresPlayer2;
 
-      //TODO: Update tablero del jugador
+      squares[index] = piece;
+      this.turn = squares[index] === "X" ? "O" : "X";
 
-      // Publish move to the channel
-      this.props.pubnub.publish({
-        message: {
-          index: index,
-          piece: this.props.piece,
-          turn: this.turn,
-        },
-        channel: this.props.gameChannel,
+      this.setState({
+        squaresPlayer2: squares,
+        whosTurn: !this.state.whosTurn,
       });
 
-      // Check if there is a winner
       this.checkForWinner(squares);
     }
+  };
+
+  onMakeMovePlayer1 = (index) => {
+    const squares = this.state.squaresPlayer1;
+
+    // Check if the square is empty and if it's the player's turn to make a move
+    if (!squares[index] && this.turn === this.props.piece) {
+      squares[index] = "Out";
+
+      this.setState({
+        squaresPlayer1: squares,
+      });
+    }
+  };
+
+  onMakeMovePlayer2 = (index) => {
+    const squares = this.state.squaresPlayer2;
+
+    // Check if the square is empty and if it's the player's turn to make a move
+    if (!squares[index] && this.turn === this.props.piece) {
+      squares[index] = "Out";
+
+      this.setState({
+        squaresPlayer2: squares,
+      });
+    }
+  };
+
+  onFinishMovePlayer = () => {
+    this.setState({
+      whosTurn: !this.state.whosTurn,
+    });
+
+    // Other player's turn to make a move
+    this.turn = this.turn === "X" ? "O" : "X";
+
+    // Publish move to the channel
+    this.props.pubnub.publish({
+      message: {
+        // index: index,
+        piece: this.props.piece,
+        turn: this.turn,
+      },
+      channel: this.props.gameChannel,
+    });
+
+    // Check if there is a winner
+    // this.checkForWinner(squares);
   };
 
   render() {
@@ -221,12 +254,22 @@ class Game extends React.Component {
     return (
       <div className="game">
         <div className="board">
-          <Board
-            squares={this.state.squares}
-            onClick={(index) => this.onMakeMove(index)}
-          />
+          {this.props.isRoomCreator ? (
+            <Board
+              squares={this.state.squaresPlayer1}
+              onClick={(index) => this.onMakeMovePlayer1(index)}
+            />
+          ) : (
+            <Board
+              squares={this.state.squaresPlayer2}
+              onClick={(index) => this.onMakeMovePlayer2(index)}
+            />
+          )}
+
           <p className="status-info">{status}</p>
         </div>
+
+        <button onClick={this.onFinishMovePlayer}>Listo!</button>
 
         <div className="scores-container">
           <div>

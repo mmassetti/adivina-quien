@@ -15,7 +15,7 @@ class App extends Component {
     });
 
     this.state = {
-      piece: "",
+      currentPlayer: "",
       isPlaying: false,
       isRoomCreator: false,
       isDisabled: false,
@@ -87,7 +87,7 @@ class App extends Component {
     });
 
     this.setState({
-      piece: "X",
+      currentPlayer: "player1",
       isRoomCreator: true,
       isDisabled: true, // Disable the 'Create' button
       myTurn: true, // Room creator makes the 1st move
@@ -138,7 +138,7 @@ class App extends Component {
           });
 
           this.setState({
-            piece: "O",
+            currentPlayer: "player2",
           });
 
           this.pubnub.publish({
@@ -173,7 +173,7 @@ class App extends Component {
   // Reset everything
   endGame = () => {
     this.setState({
-      piece: "",
+      currentPlayer: "",
       isPlaying: false,
       isRoomCreator: false,
       isDisabled: false,
@@ -226,11 +226,11 @@ class App extends Component {
           <Game
             pubnub={this.pubnub}
             gameChannel={this.gameChannel}
-            piece={this.state.piece}
+            currentPlayer={this.state.currentPlayer}
             isRoomCreator={this.state.isRoomCreator}
             myTurn={this.state.myTurn}
-            xUsername={this.state.xUsername}
-            oUsername={this.state.oUsername}
+            // player1Username={this.state.xUsername}
+            // player2Username={this.state.oUsername}
             endGame={this.endGame}
           />
         )}

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Transition from "../utils/Transition.js";
 import Header from "../partials/Header";
 import Footer from "../partials/Footer";
+import { Link } from "react-router-dom";
 
 function CreateRoom({ onPressCreate }) {
   const [tab, setTab] = useState(1);
@@ -34,6 +35,13 @@ function CreateRoom({ onPressCreate }) {
             <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
               <div className="pt-12 md:pt-20">
                 {/* Section header */}
+                <Link
+                  to="/"
+                  className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out"
+                >
+                  ⬅ Menú principal
+                </Link>
+
                 <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
                   <h1 className="h2 mb-4">Crear sala</h1>
                 </div>

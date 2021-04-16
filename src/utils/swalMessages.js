@@ -5,7 +5,7 @@ export const onPressJoinConfig = () => {
     allowOutsideClick: false,
     inputPlaceholder: "Ingresá el ID de la sala",
     showCancelButton: true,
-    confirmButtonColor: "rgb(208,33,41)",
+    confirmButtonColor: "#0070F4",
     confirmButtonText: "OK",
     width: 275,
     padding: "0.7em",
@@ -15,6 +15,7 @@ export const onPressJoinConfig = () => {
       confirmButton: "join-button-class ",
       cancelButton: "join-button-class",
     },
+    cancelButtonText: "Cancelar",
   };
 };
 

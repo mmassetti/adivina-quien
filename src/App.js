@@ -181,7 +181,9 @@ class App extends Component {
           {!this.state.isPlaying && !this.roomId && (
             <Home onPressJoin={() => this.onPressJoin()} />
           )}
-          {!this.state.isPlaying && this.roomId && <WaitingOpponent />}
+          {!this.state.isPlaying && this.roomId && (
+            <WaitingOpponent onCancel={() => this.endGame()} />
+          )}
           {this.state.isPlaying && (
             <Game
               pubnub={this.pubnub}

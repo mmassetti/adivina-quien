@@ -175,7 +175,6 @@ class App extends Component {
 
   render() {
     return (
-      //TODO: Mandarle a home lo que requiere Game, Crear y Unirse, y pasarle "onPressCreate" y "onPressJoin"
       <Switch>
         <Route exact path="/">
           {!this.state.isPlaying && !this.roomId && (

@@ -1,57 +1,42 @@
 import React from "react";
-import Square from "./Square";
-import Gallery from "react-grid-gallery";
+import ImageList from "@material-ui/core/ImageList";
+import ImageListItem from "@material-ui/core/ImageListItem";
+import ImageListItemBar from "@material-ui/core/ImageListItemBar";
 
 function Board({ squares, onClick }) {
-  // Create the 3 x 3 board
-  // function createBoard(row, col) {
-  //   const board = [];
-  //   let cellCounter = 0;
-
-  //   for (let i = 0; i < row; i += 1) {
-  //     const columns = [];
-  //     for (let j = 0; j < col; j += 1) {
-  //       columns.push(renderSquare(cellCounter++));
-  //     }
-  //     board.push(
-  //       <div key={i} className="board-row">
-  //         {columns}
-  //       </div>
-  //     );
-  //   }
-
-  //   return board;
-  // }
-
-  // function renderSquare(i) {
-  //   return <Square key={i} value={squares[i]} onClick={() => onClick(i)} />;
-  // }
-
-  // return <div>{createBoard(6, 4)}</div>;
-  // return <Gallery images={IMAGES} />;
-
-  function disableImage(index) {}
-
   return (
-    <div class="container mx-auto px-4">
-      <section class="py-8 px-4">
-        <div class="flex flex-wrap -mx-4 -mb-8">
-          {squares.map((square, index) => {
-            return (
-              <div class="md:w-1/4 px-4 mb-8">
-                <img
-                  style={{ cursor: "pointer" }}
-                  className="rounded shadow-md"
-                  src={square.url}
-                  alt=""
-                  onClick={() => onClick(index)}
-                />
-              </div>
-            );
-          })}
-        </div>
-      </section>
-    </div>
+    <ImageList cols={6} rowHeight={300}>
+      {squares.map((square, index) => {
+        let squareImg = "";
+        if (square.show) {
+          squareImg = square.url;
+        } else {
+          squareImg = square.hideImageUrl;
+        }
+
+        return (
+          <ImageListItem key={square.url} onClick={() => onClick(index)}>
+            {/* TODO: Cambiar ancho */}
+            <img
+              srcSet={`${squareImg}?w=164&h=164&fit=crop&auto=format 1x,
+              ${square.url}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+              alt={square.url}
+              loading="lazy"
+              style={{ cursor: "pointer" }}
+              className="rounded shadow-md"
+            />
+            <ImageListItemBar
+              title={square.title}
+              position="below"
+              style={{
+                textAlign: "center",
+                textDecoration: square.show ? null : "line-through",
+              }}
+            />
+          </ImageListItem>
+        );
+      })}
+    </ImageList>
   );
 }
 

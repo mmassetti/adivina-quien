@@ -5,7 +5,7 @@ import ImageListItemBar from "@material-ui/core/ImageListItemBar";
 
 function Board({ squares, onClick }) {
   return (
-    <ImageList cols={6} rowHeight={300}>
+    <ImageList cols={6} rowHeight={350}>
       {squares.map((square, index) => {
         let squareImg = "";
         if (square.show) {

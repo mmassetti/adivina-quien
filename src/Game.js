@@ -135,14 +135,12 @@ class Game extends React.Component {
               <div className="relative max-w-8xl mx-auto px-4 sm:px-6">
                 <div className="pt-2 md:pt-6">
                   {/* Section header */}
-                  {/* //TODO: Revisar esto, hay que reniciar el juego */}
-                  <Link
-                    to="/"
+                  <button
+                    onClick={() => this.props.endGame()}
                     className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out"
                   >
                     ⬅ Menú principal
-                  </Link>
-
+                  </button>
                   <div className="max-w-3xl mx-auto text-center pb-6 md:pb-8">
                     <h1 className="h2 mb-4">¡Adivina quién!</h1>
                   </div>
@@ -191,7 +189,11 @@ class Game extends React.Component {
                                 Eliminar seleccionadas
                               </button>
                             </div>
-                          ) : null}
+                          ) : (
+                            <div className="flex justify-center mt-6 mb-6">
+                              <h3>Esperando que juegue tu rival...</h3>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </section>

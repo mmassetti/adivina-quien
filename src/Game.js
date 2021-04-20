@@ -4,14 +4,17 @@ import Swal from "sweetalert2";
 import Footer from "./partials/Footer";
 import { Link } from "react-router-dom";
 import { getTvSeries } from "./utils/getImagesUrls";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import classNames from "classnames";
+import SidePanel from "./pages/SidePanel";
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
 
     let imagesUrls = getTvSeries();
+    // get random tv series
+    this.playerCharacterImg =
+      imagesUrls[(imagesUrls.length * Math.random()) | 0];
 
     this.state = {
       squaresPlayer1: imagesUrls,
@@ -21,11 +24,6 @@ class Game extends React.Component {
 
     this.turn = "player1";
     this.gameOver = false;
-    this.playerCharacterImg = {
-      url:
-        "https://res.cloudinary.com/sebanoe/image/upload/v1618704842/AdivinaQuien/series/friends_ji6gdq.jpg",
-      title: "TEST",
-    };
   }
 
   componentDidMount() {
@@ -118,7 +116,6 @@ class Game extends React.Component {
   render() {
     let status;
     // Change to current player's turn
-    //TODO: Darle color verde y rojo a esto
     status = `${
       this.state.whosTurn
         ? "Te toca preguntar a vos"
@@ -127,8 +124,6 @@ class Game extends React.Component {
 
     return (
       <div className="flex flex-col min-h-screen overflow-hidden">
-        {/* <Header /> */}
-
         <main className="flex-grow">
           <section className="relative">
             <>
@@ -140,6 +135,7 @@ class Game extends React.Component {
               <div className="relative max-w-8xl mx-auto px-4 sm:px-6">
                 <div className="pt-2 md:pt-6">
                   {/* Section header */}
+                  {/* //TODO: Revisar esto, hay que reniciar el juego */}
                   <Link
                     to="/"
                     className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out"
@@ -200,36 +196,9 @@ class Game extends React.Component {
                       </div>
                     </section>
 
-                    <div className="flex w-1/4 mt-16 flex-col md:ml-auto md:mr-0 mx-auto items-center flex-shrink-0">
-                      <div className="text-center flex flex-col space-y-2 ">
-                        <div className="font-bold leading-snug tracking-tight mb-1 mt-2">
-                          Te tocó:
-                        </div>
-                        <img
-                          src={this.playerCharacterImg.url}
-                          alt="this.playerCharacterImg"
-                          width={300}
-                          height={300}
-                        />
-                      </div>
-                      <div>
-                        <div className="mt-4 text-center font-bold leading-snug tracking-tight mb-1">
-                          Tomá notas:
-                        </div>
-                        <TextareaAutosize
-                          aria-label="empty textarea"
-                          placeholder="Escribí pistas, descartes, etc..."
-                          style={{
-                            width: "300px",
-                            height: "300px",
-                            background: "rgb(234,234,234)",
-                            padding: "1rem",
-                          }}
-                        />
-                      </div>
-
-                      <div></div>
-                    </div>
+                    <SidePanel
+                      playerCharacterUrl={this.playerCharacterImg.url}
+                    />
                   </div>
                 </div>
               </div>
